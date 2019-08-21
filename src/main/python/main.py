@@ -13,12 +13,12 @@
 #---------------------------------------------------------#
 
 import re
-
+import json
 
 #--------------------------Classes------------------------#
 
 # Class User
-class User:
+class User(object):
     
     Name = "John Doe"                # Default name is John Doe starting out
     email = "name@something.com"     # email address of user
@@ -48,6 +48,10 @@ class User:
             self.Name = name
         else:
             print("Ok we won't change your name then")
+    
+    # Converts object to be stored as JSON format in text
+    def toJson(self):
+        return "{{Name:{0}, email:{1}, Nickname:{2} }}".format(self.Name, self.email, self.Nickname)
 
 def checkEmail(email):
     """Checks if the user input a valid email address.
@@ -76,64 +80,98 @@ def displayUsers(userList):
         print("Nickname = ", u.getNickname())
         print("---------------------------------")
 
+def saveToDisk(userList):
+    """Saves User List to flat file
+
+    Takes in User List and saves to file in JSON format
+    
+    Returns nothing"""
+
+    with open("savedUsers.txt", 'a') as fp:
+        for u in userList:
+            fp.writelines(u.toJson()+"\n")
+    print("Saved so you can import this User List next time!\n")
+
+def importUsers():
+    """Imports User List from disk
+
+    Looks for savedUsers.txt file and creates a list of Class objects
+
+    Returns a list of User class objects"""
+    return None
+
 # Main funciton for code sample
 def main():
     print("Welcome to Code Sample by Wes Forman\n")
 
     print("Lets try some user input and logic first\n\n")
 
-    # While loop asking for user input and using try except to make sure we only have ints
-    ans = None
-    while(ans is None):
-        try:
-            ans = int(input("Give me a number between 1 and 10\n"))
-        except ValueError:
-            print("Please only enter a number\n\n")
-        if(ans < 1 or ans > 10):
-            ans = None
-        else:
-            break
+    # Try to import User List first before creating a new one
+    Usr = importUsers()
 
-    print("Great, you answered with", ans)
-    print("Now I am going to need some more input from you\n")
-    print("Since you chose", ans,", please give me that many names")
-    
-    # Loop through and create a Name list based on the number they gave
-    Name  = []
-    for i in range(0,ans):
-        Name.append(input("Enter a name\n"))
-    
-    print("Alright, lets now get ", ans, " emails, of course fake ones for this exercise\n")
-    
-    # Get email in the correct format from input and store in list
-    Emails = []
-    for i in range(0,ans):
-        # Loop until they enter a valid email then store and go onto the next index
-        while(True):
-            address = input("Enter a valid email. something@yeah.com\n")
-            if(not checkEmail(address)):
-                print("You didn't enter a correct type of email")
-                continue
+    if(not Usr):
+
+        # While loop asking for user input and using try except to make sure we only have ints
+        ans = None
+        while(ans is None):
+            try:
+                ans = int(input("Give me a number between 1 and 10\n"))
+            except ValueError:
+                print("Please only enter a number\n\n")
+            if(ans < 1 or ans > 10):
+                ans = None
             else:
                 break
-        Emails.append(address)
 
-    # Now we will read in one more value from the user as Nickname and store in list in a loop
-    nickname = []
-    print("Now the last thing, lets pick a nick name")
+        print("Great, you answered with", ans)
+        print("Now I am going to need some more input from you\n")
+        print("Since you chose", ans,", please give me that many names")
+        
+        # Loop through and create a Name list based on the number they gave
+        Name  = []
+        for i in range(0,ans):
+            Name.append(input("Enter a name\n"))
+        
+        print("Alright, lets now get ", ans, " emails, of course fake ones for this exercise\n")
+        
+        # Get email in the correct format from input and store in list
+        Emails = []
+        for i in range(0,ans):
+            # Loop until they enter a valid email then store and go onto the next index
+            while(True):
+                address = input("Enter a valid email. something@yeah.com\n")
+                if(not checkEmail(address)):
+                    print("You didn't enter a correct type of email")
+                    continue
+                else:
+                    break
+            Emails.append(address)
+
+        # Now we will read in one more value from the user as Nickname and store in list in a loop
+        nickname = []
+        print("Now the last thing, lets pick a nick name")
+        
+        for i in range(0,ans):
+            nickname.append(input("Enter a nickname, nothing crazy now..."))
+
+        # Now create user classes based on all that input
+        Usr = []
+        for i in range(0, ans):
+            Usr.append(User(Name[i], Emails[i], nickname[i]))
+
+        print("Now we have ", ans, "Users in a list\n")
     
-    for i in range(0,ans):
-        nickname.append(input("Enter a nickname, nothing crazy now..."))
+    else:
+        print("We loaded users list")
 
-    # Now create user classes based on all that input
-    Usr = []
-    for i in range(0, ans):
-        Usr.append(User(Name[i], Emails[i], nickname[i]))
-
-    print("Now we have ", ans, "Users in a list\n")
 
     # Method called to display users in a nice format
     displayUsers(Usr)
+
+    if(input("Would you like to save these users to a file Y/n?\n") == "Y"):
+        saveToDisk(Usr)
+    
+    
 
 
 
