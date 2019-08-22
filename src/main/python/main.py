@@ -14,11 +14,11 @@
 
 import re
 import json
-
+import Mods
 #--------------------------Classes------------------------#
 
 # Class User
-class User(object):
+class User():
     
     Name = "John Doe"                # Default name is John Doe starting out
     email = "name@something.com"     # email address of user
@@ -98,7 +98,19 @@ def importUsers():
     Looks for savedUsers.txt file and creates a list of Class objects
 
     Returns a list of User class objects"""
-    return None
+    with open("savedUsers.txt", "r") as fp:
+        Users = []
+        for line in fp:
+            #expload string on comma
+            lineArray = line.split(",")
+            #Split each var up
+            name = lineArray[0].split(":")[1]
+            email = lineArray[1].split(":")[1]
+            nickname = lineArray[2].split(":")[1].strip(" }")
+            # clean up end of nickname string
+            nickname = nickname.strip(" }\n")
+            Users.append(User(name, email, nickname))
+    return Users
 
 # Main funciton for code sample
 def main():
@@ -160,20 +172,23 @@ def main():
             Usr.append(User(Name[i], Emails[i], nickname[i]))
 
         print("Now we have ", ans, "Users in a list\n")
+
+        # Method called to display users in a nice format
+        displayUsers(Usr)
+
+        if(input("Would you like to save these users to a file Y/n?\n") == "Y"):
+            saveToDisk(Usr)
     
     else:
         print("We loaded users list")
 
-
-    # Method called to display users in a nice format
-    displayUsers(Usr)
-
-    if(input("Would you like to save these users to a file Y/n?\n") == "Y"):
-        saveToDisk(Usr)
+        # Method called to display users in a nice format
+        displayUsers(Usr)
     
-    
-
-
+    while(True):
+        response = input("Would you like to make an Mod User? Enter Y/n")
+        if(response == "Y"):
+            
 
 if __name__ == "__main__":
     main()
