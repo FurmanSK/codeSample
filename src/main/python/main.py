@@ -12,59 +12,14 @@
 #  more.
 #---------------------------------------------------------#
 
+# Imports
 import re
 import json
-import Mods
-#--------------------------Classes------------------------#
+import getpass
+from users import *
+from mods import *
 
-# Class User
-class User():
-    
-    Name = "John Doe"                # Default name is John Doe starting out
-    email = "name@something.com"     # email address of user
-    Nickname = "Slick"               # Nickname of user
-
-
-    # constructor of the Character object.
-    def __init__(self, name, email, nickname):
-        self.Name = name
-        self.email = email
-        self.Nickname = nickname
-
-    # Getter Methods
-    def getName(self):
-        return self.Name
-    
-    def getEmail(self):
-        return self.email
-
-    def getNickname(self):
-        return self.Nickname
-
-    # Setter Methods
-
-    def setName(self, name):
-        if( input("Do you really want to change your name Y/n?") == "Y"):
-            self.Name = name
-        else:
-            print("Ok we won't change your name then")
-    
-    # Converts object to be stored as JSON format in text
-    def toJson(self):
-        return "{{Name:{0}, email:{1}, Nickname:{2} }}".format(self.Name, self.email, self.Nickname)
-
-def checkEmail(email):
-    """Checks if the user input a valid email address.
-
-    Takes in a string and uses regex to make sure it is a valid email.
-    
-    Returns boolean True/False"""
-
-    isValid = re.search('^\w+@\w+.\w+$', email)
-    if isValid:
-        return True
-    else:
-        return False
+#--------------------------Methods------------------------#
 
 def displayUsers(userList):
     """Displays a list of the users created.
@@ -74,7 +29,8 @@ def displayUsers(userList):
     Returns nothing"""
 
     print("---------------------------------")
-    for u in userList:
+    for id, u in enumerate(userList):
+        print("User ID = ", id)
         print("Name = ", u.getName())
         print("email = ", u.getEmail())
         print("Nickname = ", u.getNickname())
@@ -87,30 +43,31 @@ def saveToDisk(userList):
     
     Returns nothing"""
 
-    with open("savedUsers.txt", 'a') as fp:
+    with open("savedUsers.txt", 'w') as fp:
+        fp.truncate()
         for u in userList:
             fp.writelines(u.toJson()+"\n")
     print("Saved so you can import this User List next time!\n")
 
-def importUsers():
-    """Imports User List from disk
+def login(mList):
+    """Prompts user for Mod login
+    
+    Takes in Mods list to verify against
 
-    Looks for savedUsers.txt file and creates a list of Class objects
+    Returns a Mods object of current Mod if valid, None if they didn't login correctly
+    """
+    print("Logging in system\n")
+    username = input("Enter your Mod user name:")
+    passwd = getpass.getpass()
 
-    Returns a list of User class objects"""
-    with open("savedUsers.txt", "r") as fp:
-        Users = []
-        for line in fp:
-            #expload string on comma
-            lineArray = line.split(",")
-            #Split each var up
-            name = lineArray[0].split(":")[1]
-            email = lineArray[1].split(":")[1]
-            nickname = lineArray[2].split(":")[1].strip(" }")
-            # clean up end of nickname string
-            nickname = nickname.strip(" }\n")
-            Users.append(User(name, email, nickname))
-    return Users
+    for m in mList:
+        if(m.Name == username and m.passwd == passwd):
+            mod = m
+        else: 
+            mod = None
+    
+    return mod
+
 
 # Main funciton for code sample
 def main():
@@ -185,10 +142,38 @@ def main():
         # Method called to display users in a nice format
         displayUsers(Usr)
     
-    while(True):
-        response = input("Would you like to make an Mod User? Enter Y/n")
-        if(response == "Y"):
-            
+    # Create or Read in mods list
+    print("\n-----------------------------\nLoading a mods list\n")
+
+    ModsList = importMods()
+    curMod = login(ModsList)
+    if(curMod):
+        print("Login successful\n")
+        while(True):
+            print("------------------------------")
+            print("What would you like to do?\n")
+            print("C - Create new user")
+            print("D - Delete user")
+            print("S - Save users")
+            print("SC - Start MySQL Container")
+            print("Q - Quit program")
+            print("------------------------------")
+            choice = input("Choice: ")
+
+            if(choice == "C"):
+                Usr.append(createUser())
+            if(choice == "D"):
+                displayUsers(Usr)
+                id = int(input("Pick the ID to delete:"))
+                Usr = curMod.deleteUser(Usr, id)
+            if(choice == "S"):
+                print("Saving to disk...")
+                saveToDisk(Usr)
+
+    else:
+        print("Login failed. Try again. Staying in user mode")
+        print("Would you like to add a post?")
+
 
 if __name__ == "__main__":
     main()

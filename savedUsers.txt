@@ -1,0 +1,4 @@
+{Name:Wes, email:wes@wc.com, Nickname:WC }
+{Name:JR, email:jr@jag.com, Nickname:JAG }
+{Name:Greg, email:Greg@comp.com, Nickname:gg }
+{Name:Carl, email:carl@jones.com, Nickname:cjones }
