@@ -39,15 +39,19 @@ class Mods(User):
         
         return userList
     
-    def createNewUser(self, name, email, nickname):
-        if(self.adminAccess):
-            user = User(name, email, nickname)
+    def createNewUser(self, userList, UserObj):
+        """ Creates new User Class Object and returns User Class Object
         
-        return user
+        Inputs: name(str), email(str), nickname(str)
 
-    def startContainer(self):
-        pass
+        returns User Class Object
+        """
+        if(self.adminAccess):
+            userList.append(UserObj)
+        
+        return userList
 
+#--------------------Mods Lib Methods--------------------#
 def importMods():
     """Imports mods List from disk
 

@@ -16,6 +16,8 @@
 import re
 import json
 import getpass
+import sys
+import io
 from users import *
 from mods import *
 
@@ -30,10 +32,10 @@ def displayUsers(userList):
 
     print("---------------------------------")
     for id, u in enumerate(userList):
-        print("User ID = ", id)
-        print("Name = ", u.getName())
-        print("email = ", u.getEmail())
-        print("Nickname = ", u.getNickname())
+        print("User ID =", id)
+        print("Name =", u.getName())
+        print("email =", u.getEmail())
+        print("Nickname =", u.getNickname())
         print("---------------------------------")
 
 def saveToDisk(userList):
@@ -139,8 +141,13 @@ def main():
     else:
         print("We loaded users list")
 
+        txt_out = io.StringIO()
+        sys.stdout = txt_out
+
         # Method called to display users in a nice format
         displayUsers(Usr)
+
+        sys.stdout = sys.__stdout__
     
     # Create or Read in mods list
     print("\n-----------------------------\nLoading a mods list\n")
@@ -155,13 +162,12 @@ def main():
             print("C - Create new user")
             print("D - Delete user")
             print("S - Save users")
-            print("SC - Start MySQL Container")
             print("Q - Quit program")
             print("------------------------------")
             choice = input("Choice: ")
 
             if(choice == "C"):
-                Usr.append(createUser())
+                Usr = curMod.createNewUser(Usr, createUser())
             if(choice == "D"):
                 displayUsers(Usr)
                 id = int(input("Pick the ID to delete:"))

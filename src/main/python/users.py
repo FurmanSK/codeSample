@@ -81,7 +81,7 @@ def createUser():
 
     # Loop until they enter a valid email then store and go onto the next index
     while(True):
-        email = input("Enter a valid email. something@yeah.com\n")
+        email = input("Enter a valid email. something@yeah.com: ")
         if(not checkEmail(email)):
             print("You didn't enter a correct type of email")
             continue

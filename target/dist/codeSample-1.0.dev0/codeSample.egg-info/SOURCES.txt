@@ -1,0 +1,10 @@
+main.py
+mods.py
+setup.py
+users.py
+codeSample.egg-info/PKG-INFO
+codeSample.egg-info/SOURCES.txt
+codeSample.egg-info/dependency_links.txt
+codeSample.egg-info/namespace_packages.txt
+codeSample.egg-info/top_level.txt
+codeSample.egg-info/zip-safe
