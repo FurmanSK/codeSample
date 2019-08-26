@@ -10,11 +10,14 @@ These instructions will get you a copy of the project up and running on your loc
 
 What things you need to install the software and how to install them
 
-I use virtualenv to make my venv.
-
+Python Version
 ```
 python 3.6.8
-pybuilder 0.12.0.dev20190116131423
+```
+
+I have a requirements.txt to install dependencies needed
+```
+pip install -r requirements.txt
 ```
 
 ### Installing
