@@ -15,45 +15,62 @@ Python Version
 python 3.6.8
 ```
 
-I have a requirements.txt to install dependencies needed
+I have a requirements.txt to install dependencies needed.
+Run as sudo or add --user to install depending on how you want to install them
 ```
-pip install -r requirements.txt
-```
-
-### Installing
-
-Download repository and activate venv
-```
-source venv/bin/actiavte
+pip install pybuilder
 ```
 
-Builds are in target/dist/
-Run main.py
+### Installing and running tests
 
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-I use pybuilder to build and test my project.
-
-In the project root directory run 
+After cloning repository run pybuilder to install dependencies
+```
+pyb install_dependencies
+```
+Then run pybuilder to install. This will build and install in target/
 ```
 pyb
 ```
-This will build and run test cases for the files in the project and output pass/fail.
 
-
-### And coding style tests
-
-Explain what these tests test and why
-
+To clean up you can run this
 ```
-Give an example
+pyb clean
+```
+Which will delete the target directory and build files
+
+### Run it
+
+To run main.py, after you run pyb to build head to the dist dicrectory and run it.
+```
+cd target/dist/codeSample-1.0.dev0
+
+python main.py
 ```
 
-## Deployment
+The code loads in a mod.txt and savedUsers.txt files and then prompts you to login as a mod.
+To login, enter root and the password for this mod is test123.
 
-Add additional notes about how to deploy this on a live system
+Then you are shown a list of commands to run that look like this...
+```
+Login successful
+
+------------------------------
+What would you like to do?
+
+C - Create new user
+D - Delete user
+S - Save users
+Q - Quit program
+------------------------------
+Choice:
+```
+
+Choices are:
+* Create New User - This will prompt you for input to create a new user
+* Delete user - This will display all users and ask which one you want to delete based on an ID number
+* Save users - This saves the current users to a text file by updating/overwriting it.
+* Quit program - Quits the program.
+
 
 ## Built With
 
