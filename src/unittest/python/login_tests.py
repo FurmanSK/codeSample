@@ -18,14 +18,12 @@ class loginTest(unittest.TestCase):
         # Create a modList to pass to login()
         self.mod = [Mods("root", "root@host.com", "root", "root")]
 
-    def test_login_correct(self):
+    def test_authMod_correct(self):
         correct_mod = self.mod[0]
 
-        with mock.patch('main.input', return_value='root'), mock.patch('getpass.getpass', return_value="root"):
-            self.assertEqual(login(self.mod), correct_mod)
+        self.assertEqual(authMod("root", "root", self.mod), correct_mod)
     
-    def test_login_failed(self):
+    def test_authMod_failed(self):
         correct_mod = None
 
-        with mock.patch('main.input', return_value='root'), mock.patch('getpass.getpass', return_value="r"):
-            self.assertEqual(login(self.mod), correct_mod)
+        self.assertEqual(authMod("root", "r", self.mod), correct_mod)

@@ -62,12 +62,16 @@ def login(mList):
     username = input("Enter your Mod user name:")
     passwd = getpass.getpass()
 
+    return authMod(username, passwd, mList)
+
+def authMod(username, passwd, mList):
+    
     for m in mList:
         if(m.Name == username and m.passwd == passwd):
             mod = m
+            break
         else: 
             mod = None
-    
     return mod
 
 

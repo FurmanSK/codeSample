@@ -62,12 +62,16 @@ def login(mList):
     username = input("Enter your Mod user name:")
     passwd = getpass.getpass()
 
+    return authMod(username, passwd, mList)
+
+def authMod(username, passwd, mList):
+    
     for m in mList:
         if(m.Name == username and m.passwd == passwd):
             mod = m
+            break
         else: 
             mod = None
-    
     return mod
 
 
@@ -162,13 +166,12 @@ def main():
             print("C - Create new user")
             print("D - Delete user")
             print("S - Save users")
-            print("SC - Start MySQL Container")
             print("Q - Quit program")
             print("------------------------------")
             choice = input("Choice: ")
 
             if(choice == "C"):
-                Usr.append(createUser())
+                Usr = curMod.createNewUser(Usr, createUser())
             if(choice == "D"):
                 displayUsers(Usr)
                 id = int(input("Pick the ID to delete:"))
