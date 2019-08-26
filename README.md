@@ -75,7 +75,7 @@ Choices are:
 ## Built With
 
 * [Python 3.6.8](https://python.org/) - Python 3 Core
-* [Maven](http://pybuilder.github.io/) - Pybuilder python project build and test
+* [Pybuilder](http://pybuilder.github.io/) - Pybuilder python project build and test
 
 
 ## Authors
