@@ -179,6 +179,8 @@ def main():
             if(choice == "S"):
                 print("Saving to disk...")
                 saveToDisk(Usr)
+            if(choice == "Q"):
+                quit()
 
     else:
         print("Login failed. Try again. Staying in user mode")
